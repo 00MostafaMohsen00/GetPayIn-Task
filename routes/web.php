@@ -1,14 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ListeingController;
-use App\Http\Controllers\ListeingImageController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\OfferController;
-use App\Http\Controllers\PasswordController;
-use App\Http\Controllers\RealtorListeingController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,8 +25,8 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth:web')->group(function () {
     Route::delete('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('task/done/{id}', [TaskController::class, 'done'])->name('task.done');
-    Route::get('task/force/delete/{id}', [TaskController::class, 'forceDelete'])->name('task.forceDelete');
-    Route::get('task/restore/{id}', [TaskController::class, 'restore'])->name('task.restore');
-    Route::resource('tasks', TaskController::class)->except('show');
+    Route::get('profile', [AuthController::class, 'profile'])->name('profile');
+    Route::post('profile', [AuthController::class, 'profileSave'])->name('profile.save');
+    Route::post('posts/{id}', [PostController::class, 'update'])->name('posts.update');
+    Route::resource('posts', PostController::class)->except(['show', 'update']);
 });

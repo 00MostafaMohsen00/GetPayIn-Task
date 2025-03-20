@@ -5,7 +5,7 @@
         <div class="container mx-auto">
             <nav class="p-4 flex justify-between items-center">
                 <div class="text-lg font-medium">
-                    <Link :href="route('tasks.index')" class="btn-outline">
+                    <Link :href="route('posts.index')" class="btn-outline">
                         <i class="fas fa-home"></i>
                     </Link>
                 </div>
@@ -34,12 +34,16 @@
                                 <i :class="emoji"></i>
                             </button>
                             <div v-if="user" class="flex flex-col gap-1">
-                                <div class="text-sm text-gray-500 text-center">
-                                    {{ user.name }}
-                                </div>
+                                <Link
+                                    :href="route('profile')"
+                                    class="menu-item text-center"
+                                    ><div class="text-sm text-gray-500">
+                                        {{ user.name }}
+                                    </div>
+                                </Link>
 
                                 <Link
-                                    :href="route('tasks.create')"
+                                    :href="route('posts.create')"
                                     class="menu-item text-center"
                                 >
                                     <i class="fas fa-plus"></i>

@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent="submit">
-        <fields :form="form" :categories="categories" />
+        <fields :form="form" />
     </form>
 </template>
 
@@ -9,15 +9,14 @@ import { useForm } from "@inertiajs/vue3";
 import Fields from "./Fields.vue";
 const form = useForm({
     title: "",
-    description: "",
-    category_id: "",
-    due_date: "",
+    content: "",
+    status: "2",
+    image: null,
+    scheduled_time: "",
 });
-defineProps({
-    categories: Array,
-});
+
 const submit = () => {
-    form.post(route("tasks.store"), form, {
+    form.post(route("posts.store"), form, {
         preserveScroll: true,
         preserveState: true,
     });

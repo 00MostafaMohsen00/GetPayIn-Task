@@ -6,6 +6,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\UserCreateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProfileRequest;
 
 class AuthController extends Controller
 {
@@ -18,7 +19,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (auth()->attempt($credentials, true)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('tasks.index'))->with('success', 'Logged In Successfully');
+            return redirect()->intended(route('posts.index'))->with('success', 'Logged In Successfully');
         }
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
@@ -37,7 +38,7 @@ class AuthController extends Controller
 
         auth()->login($user);
 
-        return redirect()->intended(route('tasks.index'))->with('success', 'Logged In Successfully');
+        return redirect()->intended(route('posts.index'))->with('success', 'Logged In Successfully');
     }
     public function logout(Request $request)
     {
@@ -45,5 +46,20 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('login')->with('success', 'Logged Out Successfully');
+    }
+
+    public function profile()
+    {
+        $user = auth()->user();
+        return inertia('Auth/Profile', get_defined_vars());
+    }
+
+    public function profileSave(ProfileRequest $request)
+    {
+        $data = $request->validated();
+        $data['email'] = auth()->user()->provider ? auth()->user()->email : $data['email'];
+        $user = auth()->user();
+        $user->update($request->validated());
+        return redirect()->route('profile')->with('success', 'Profile Updated Successfully');
     }
 }

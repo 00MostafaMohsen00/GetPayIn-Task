@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Task;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\RequiredIf;
 
-class TaskRequest extends FormRequest
+class ProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,6 +24,10 @@ class TaskRequest extends FormRequest
      */
     public function rules(): array
     {
-        return Task::rules();
+        $rules = User::$rules;
+        unset($rules['password']);
+        unset($rules['password_confirmation']);
+        $rules['email'] .= auth()->user()->id;
+        return $rules;
     }
 }
