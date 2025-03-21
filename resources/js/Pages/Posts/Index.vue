@@ -8,34 +8,30 @@
         class="grid grid-cols-1 lg:grid-cols-2 gap-2"
     >
         <Box v-for="post in posts.data" :key="post.id">
-            <div
-                class="flex flex-col md:flex-row gap-2 md:items-center justify-between"
-            >
-                <div class="flex items-center gap-2" v-if="post.image">
-                    <img
-                        :src="post.image"
-                        alt="Image"
-                        class="w-8 h-8 rounded-full"
-                    />
-                </div>
-                <div class="grid grid-cols-2 gap-5">
+            <div class="flex flex-row gap-2 flex-wrap">
+                <div class="grid grid-cols-3 gap-5">
                     <div>{{ post.title }}</div>
                     <div class="text-gray-500">
-                        Scheduled Time: {{ post.scheduled_time }}
+                        <i class="fas fa-clock"></i> {{ post.scheduled_time }}
                     </div>
-                    <div class="text-gray-500">{{ post.content }}</div>
-                </div>
-                <div
-                    class="text-xs font-bold uppercase border border-dashed p-1 inline-block rounded-md mb-2"
-                    :class="{
-                        'bg-green-100 text-green-800': post.status == '1',
-                        'bg-yellow-100 text-yellow-800': post.status == '0',
-                        'bg-blue-100 text-blue-800': post.status == '2',
-                    }"
-                >
-                    {{ post.status_text }}
+                    <div
+                        class="text-xs text-center font-bold uppercase border border-dashed inline-block rounded-md"
+                        :class="{
+                            'bg-green-100 text-green-800': post.status == '1',
+                            'bg-yellow-100 text-yellow-800': post.status == '0',
+                            'bg-blue-100 text-blue-800': post.status == '2',
+                        }"
+                    >
+                        {{ post.status_text }}
+                    </div>
                 </div>
             </div>
+            <div class="text-gray-500">{{ post.content }}</div>
+
+            <div class="flex items-center gap-2" v-if="post.image">
+                <img :src="post.image" alt="Image" class="w-full h-auto" />
+            </div>
+            <platforms :platforms="post.platforms" />
             <div
                 class="flex items-center gap-1 text-gray-600 dark:text-gray-300 my-2 w-full"
             >
@@ -70,7 +66,7 @@ import Box from "@/Components/UI/Box.vue";
 import Filters from "@/Pages/Posts/Index/Components/Filters.vue";
 import Pagination from "@/Components/UI/Pagination.vue";
 import Empty from "@/Components/UI/Empty.vue";
-import DeleteButton from "@/Components/UI/DeleteButton.vue";
+import Platforms from "@/Pages/Posts/Index/Components/Platforms.vue";
 import { Link } from "@inertiajs/vue3";
 defineProps({
     posts: Array,

@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('post_platforms', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('post_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('platform_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

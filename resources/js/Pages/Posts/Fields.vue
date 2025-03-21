@@ -45,6 +45,15 @@
                 />
             </div>
         </div>
+        <PlatformSelect :platforms="platforms" v-model="form.platforms" />
+        <div
+            v-for="(message, key) in Object.entries(form.errors).filter(
+                ([key]) => key.startsWith('platforms')
+            )"
+            :key="key"
+        >
+            <error :error="message[1]" />
+        </div>
 
         <div class="col-span-6 flex justify-center gap-2">
             <input type="submit" value="Publish\Schedule" class="btn" />
@@ -61,10 +70,11 @@
 <script setup>
 import { computed } from "vue";
 import Error from "@/Components/UI/Error.vue";
+import PlatformSelect from "./PlatformSelect.vue";
 let props = defineProps({
     form: Object,
+    platforms: Array,
 });
-
 const characterCount = computed(() => props.form.content.length);
 
 const addFile = (event) => {
@@ -74,6 +84,9 @@ const addFile = (event) => {
 const draft = () => {
     props.form.status = "0";
     if (props.form.id) {
+        props.form.platforms = props.form.platforms.map((platform) =>
+            typeof platform === "object" && platform.id ? platform.id : platform
+        );
         props.form.post(route("posts.update", props.form.id), props.form, {
             preserveScroll: true,
             preserveState: true,
