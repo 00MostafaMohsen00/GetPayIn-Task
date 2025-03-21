@@ -26,6 +26,8 @@ class Post extends Model
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'sometimes|in:0,2',
             'scheduled_time' => 'required|date|after_or_equal:today',
+            'platforms' => 'required|array',
+            'platforms.*' => 'required|exists:platforms,id',
         ];
     }
 
@@ -58,5 +60,10 @@ class Post extends Model
     public function scopeEditable($query)
     {
         return $query->whereIn('status', ['0', '2']);
+    }
+
+    public function platforms()
+    {
+        return $this->belongsToMany(Platform::class, 'post_platforms');
     }
 }
